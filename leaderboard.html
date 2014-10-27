@@ -1,0 +1,40 @@
+<head>
+  <title>Leaderboard</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+</head>
+
+<body>
+  <h1>Pantr</h1>
+
+  <div class="outer">
+    {{> ingredients}}
+  </div>
+
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+</body>
+
+<template name="ingredients">
+  <div class="leaderboard">
+    {{#each ingredients}}
+      {{> ingredient}}
+    {{/each}}
+  </div>
+
+  {{#if selected_name}}
+  <div class="details">
+    <div class="name">{{selected_name}}</div>
+    <button class="inc">Give 5 points</button>
+  </div>
+  {{else}}
+  <div class="none">Click a ingredient to add to pantry</div>
+  {{/if}}
+</template>
+
+<template name="ingredient">
+  <div class="player {{selected}}">
+    <span class="name">{{name}} <fr></fr></span>
+    <span class="score">{{unit.name}}</span>
+  </div>
+</template>
+
