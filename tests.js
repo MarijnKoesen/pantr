@@ -16,7 +16,7 @@ Unit = {
 }
 
 IngredientParser = {
-    BASE_REGEX: '^([0-9]+)\\s*(l|liter|dl|cl|ml)?.*\\[(.*)\\]',
+    BASE_REGEX: '^([0-9]+(\.[0-9]+)?)\\s*(l|liter|dl|cl|ml|g|kg)?.*\\[(.*)\\]',
 
     parse: function(text) {
         var ingredients = [];
@@ -43,8 +43,8 @@ IngredientParser = {
     parseIngredient: function(ingredientLine) {
         var regExp = new RegExp(this.BASE_REGEX);
         var match = ingredientLine.match(regExp);
-        var measure = this._parseMeasure(parseInt(match[1]), match[2]);
-        return new Ingredient(stemmer(match[3]), measure);
+        var measure = this._parseMeasure(parseFloat(match[1]), match[3]);
+        return new Ingredient(stemmer(match[4]), measure);
     },
 
     _parseMeasure: function(measure, unit) {
@@ -69,6 +69,15 @@ IngredientParser = {
 
             case 'ml':
                 theUnit = Unit.VOLUME;
+                break;
+
+            case 'kg':
+                theUnit = Unit.WEIGHT;
+                measure *= 1000;
+                break;
+
+            case 'g':
+                theUnit = Unit.WEIGHT;
                 break;
 
             default:
@@ -159,28 +168,49 @@ QUnit.test("recipe parsing", function(assert) {
     assert.propEqual(
         IngredientParser.parse("Some thing\n13 dl [milk]\na"),
         [
-            getIngredient(1300, 'milk', Unit.VOLUME),
+            getIngredient(1300, 'milk', Unit.VOLUME)
         ]
     );
 
     assert.propEqual(
         IngredientParser.parse("Some thing\n13cl [milk]\n"),
         [
-            getIngredient(130, 'milk', Unit.VOLUME),
+            getIngredient(130, 'milk', Unit.VOLUME)
         ]
     );
 
     assert.propEqual(
-        IngredientParser.parse("Some thing\n100 ml lovely skimmed[milk]"),
+        IngredientParser.parse("100 ml lovely skimmed[milk]"),
         [
-            getIngredient(100, 'milk', Unit.VOLUME),
+            getIngredient(100, 'milk', Unit.VOLUME)
         ]
     );
 
     assert.propEqual(
-        IngredientParser.parse("Some thing\n100ml [milk]"),
+        IngredientParser.parse("100ml [milk]"),
         [
-            getIngredient(100, 'milk', Unit.VOLUME),
+            getIngredient(100, 'milk', Unit.VOLUME)
+        ]
+    );
+
+    assert.propEqual(
+        IngredientParser.parse("100g [butter]"),
+        [
+            getIngredient(100, 'butter', Unit.WEIGHT)
+        ]
+    );
+
+    assert.propEqual(
+        IngredientParser.parse("0.5g [yeast]"),
+        [
+            getIngredient(0.5, 'yeast', Unit.WEIGHT)
+        ]
+    );
+
+    assert.propEqual(
+        IngredientParser.parse("a\n0.5kg [yeast]\nb"),
+        [
+            getIngredient(500, 'yeast', Unit.WEIGHT)
         ]
     );
 });
