@@ -12,12 +12,24 @@ Unit = {
     VOLUME: 'VOLUME',
 
     // The weight in grams, to 1kg is 1000
-    WEIGHT: 'WEIGHT'
+    WEIGHT: 'WEIGHT',
+
+    // When no unit is found or for units like 'a pinch' or 'some'
+    UNKNOWN: 'UNKNOWN'
 }
 
 IngredientParser = {
-    BASE_REGEX: '^([0-9]+(\.[0-9]+)?)\\s*(l|liter|dl|cl|ml|g|kg)?.*\\[(.*)\\]',
+    BASE_REGEX: '^(([0-9]+(\\.[0-9]+)?)\\s*(l|liter|dl|cl|ml|g|kg)?)?.*\\[(.*)\\]',
 
+    /**
+     * Parse Ingredient text to an Ingredient[]
+     *
+     * e.g. in:
+     * "0.5kg [yeast]\n300g all purpose [flour]\npinch of [salt]"),
+     *
+     * @param text
+     * @returns {Array}
+     */
     parse: function(text) {
         var ingredients = [];
 
@@ -43,13 +55,16 @@ IngredientParser = {
     parseIngredient: function(ingredientLine) {
         var regExp = new RegExp(this.BASE_REGEX);
         var match = ingredientLine.match(regExp);
-        var measure = this._parseMeasure(parseFloat(match[1]), match[3]);
-        return new Ingredient(stemmer(match[4]), measure);
+        var measure = this._parseMeasure(parseFloat(match[2]), match[4]);
+        return new Ingredient(stemmer(match[5]), measure);
     },
 
     _parseMeasure: function(measure, unit) {
-        var theUnit;
+        if (!measure) {
+            return new Measure(-1, Unit.UNKNOWN);
+        }
 
+        var theUnit;
         switch (unit) {
             case 'l':
             case 'liter':
@@ -211,6 +226,27 @@ QUnit.test("recipe parsing", function(assert) {
         IngredientParser.parse("a\n0.5kg [yeast]\nb"),
         [
             getIngredient(500, 'yeast', Unit.WEIGHT)
+        ]
+    );
+
+    assert.propEqual(
+        IngredientParser.parse("some [salt]\nb"),
+        [
+            getIngredient(-1, 'salt', Unit.UNKNOWN)
+        ]
+    );
+
+    assert.propEqual(
+        IngredientParser.parse("a pinch of [salt]\nb"),
+        [
+            getIngredient(-1, 'salt', Unit.UNKNOWN)
+        ]
+    );
+
+    assert.propEqual(
+        IngredientParser.parse("[pepper] to taste\nb"),
+        [
+            getIngredient(-1, 'pepper', Unit.UNKNOWN)
         ]
     );
 });
