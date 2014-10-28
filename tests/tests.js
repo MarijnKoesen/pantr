@@ -56,7 +56,9 @@ IngredientParser = {
         var regExp = new RegExp(this.BASE_REGEX);
         var match = ingredientLine.match(regExp);
         var measure = this._parseMeasure(parseFloat(match[2]), match[4]);
-        return new Ingredient(stemmer(match[5]), measure);
+
+        var stemmer = new EnglishStemmer();
+        return new Ingredient(stemmer.stemWord(match[5]), measure);
     },
 
     _parseMeasure: function(measure, unit) {
