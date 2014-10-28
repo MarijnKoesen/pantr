@@ -15,23 +15,43 @@ h1 {
     font-size: 3em;
 }
 
+h2, p.title {
+    margin: 1em 0;
+    font-weight: 200;
+    text-align: center;
+    font-size: 2em;
+}
+
 .outer {
-    max-width: 400px;
+    max-width: 70em;
     margin: 0 auto;
 }
 
-.player {
+.outer > div {
+    float: left;
+    padding: 0 1em;
+}
+
+.sidebar {
+    max-width: 20em;
+}
+
+.content {
+    max-width: 50em;
+}
+
+.ingredient {
     cursor: pointer;
     padding: 5px 10px;
 }
 
-.player .name {
+.ingredient .name {
     display: inline-block;
     width: 70%;
     font-size: 1.6em;
 }
 
-.player .score {
+.ingredient .score {
     display: inline-block;
     width: 28%;
     text-align: right;
@@ -40,11 +60,11 @@ h1 {
     color: #777;
 }
 
-.player.selected {
+.ingredient.selected {
     background-color: yellow;
 }
 
-.player.selected .score {
+.ingredient.selected .score {
     color: black;
 }
 

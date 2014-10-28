@@ -1,5 +1,5 @@
 <head>
-  <title>Leaderboard</title>
+  <title>Pantr</title>
   <meta name="viewport" content="width=device-width, user-scalable=no">
 </head>
 
@@ -7,7 +7,20 @@
   <h1>Pantr</h1>
 
   <div class="outer">
-    {{> ingredients}}
+      <div class="sidebar">
+          <p class="title">Ingredients</p>
+          {{> ingredients}}
+      </div>
+
+      <div class="sidebar">
+          <p class="title">Pantry</p>
+          Your pantry is currently empty
+      </div>
+
+      <div class="content">
+          <h2>Recipes</h2>
+          You currently have no recipes
+      </div>
   </div>
 
   <div id="qunit"></div>
@@ -32,7 +45,7 @@
 </template>
 
 <template name="ingredient">
-  <div class="player {{selected}}">
+  <div class="ingredient {{selected}}">
     <span class="name">{{name}} <fr></fr></span>
     <span class="score">{{unit.name}}</span>
   </div>
