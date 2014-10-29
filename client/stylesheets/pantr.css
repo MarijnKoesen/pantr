@@ -94,4 +94,10 @@ h2, p.title {
 
 .recipe .content {
     font-size: 0.9em;
+    cursor: default;
+}
+
+.recipe .recipeIngredient {
+    border-bottom: 1px dotted red;
+    cursor: pointer;
 }
