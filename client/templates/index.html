@@ -23,16 +23,6 @@
       </div>
   </div>
 
-  <script>
-      // hacked it, as i could not get the session thingy like in the leaderboard demo working in the last 5 train minutes
-      function toggleRecipeVisibility(div) {
-          if (div.classList.contains('visible'))
-              div.classList.remove('visible')
-          else
-              div.classList.add('visible')
-      }
-  </script>
-
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
 </body>
@@ -71,7 +61,7 @@
 </template>
 
 <template name="recipe">
-    <div class="recipe {{selected}}" onclick="toggleRecipeVisibility(this)">
+    <div class="recipe {{selected}}">
         <span class="name">{{name}}</span>
         <span class="content hidden">
             <hr>
