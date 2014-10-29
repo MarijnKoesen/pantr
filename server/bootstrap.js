@@ -1,4 +1,32 @@
 Meteor.startup(function () {
+    function importRecipes() {
+        var fs = Npm.require('fs');
+        var dir = '../../../../../../recipes/';
+        console.log('Trying to read recipes in directory: ' + fs.realpathSync(dir));
+        var files = fs.readdirSync(dir);
+
+        for (var i = 0; i < files.length; i++) {
+            var path = dir + files[i];
+            console.log('Importing recipe: ' + path);
+
+
+            if (fs.statSync(path).isFile()) {
+                var recipeName = ucWords(files[i].replace(/-/g, " ")).replace(/\.md$/, "");
+                var recipeContent = fs.readFileSync(path, {encoding: "UTF-8"});
+
+                Recipes.insert({
+                    name: recipeName,
+                    content: recipeContent.replace(/\n/g, "<br>"),
+                    rawContent: recipeContent
+                })
+            }
+        }
+    }
+
+    if (Recipes.find().count() === 0) {
+        importRecipes();
+    }
+
     if (Units.find().count() === 0) {
         Units.insert({name: "Inhoud"});
         Units.insert({name: "Aantal"});

@@ -37,15 +37,17 @@ h2, p.title {
 }
 
 .content {
-    max-width: 50em;
+    max-width: 30em;
 }
 
-.ingredient {
+.ingredient,
+.recipe {
     cursor: pointer;
     padding: 5px 10px;
 }
 
-.ingredient .name {
+.ingredient .name
+.recipe .name {
     display: inline-block;
     width: 70%;
     font-size: 1.6em;
@@ -82,7 +84,14 @@ h2, p.title {
     color: #777;
 }
 
-.inc {
-    margin: 5px 0;
-    font-size: 0.6em;
+.hidden {
+    display: none;
+}
+
+.recipe.visible .content.hidden {
+    display: block;
+}
+
+.recipe .content {
+    font-size: 0.9em;
 }

@@ -19,9 +19,19 @@
 
       <div class="content">
           <h2>Recipes</h2>
-          You currently have no recipes
+          {{> recipes}}
       </div>
   </div>
+
+  <script>
+      // hacked it, as i could not get the session thingy like in the leaderboard demo working in the last 5 train minutes
+      function toggleRecipeVisibility(div) {
+          if (div.classList.contains('visible'))
+              div.classList.remove('visible')
+          else
+              div.classList.add('visible')
+      }
+  </script>
 
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
@@ -46,8 +56,27 @@
 
 <template name="ingredient">
   <div class="ingredient {{selected}}">
-    <span class="name">{{name}} <fr></fr></span>
+    <span class="name">{{name}}</span>
     <span class="score">{{unit.name}}</span>
   </div>
 </template>
 
+
+<template name="recipes">
+    <div class="recipes">
+        {{#each recipes}}
+            {{> recipe}}
+        {{/each}}
+    </div>
+</template>
+
+<template name="recipe">
+    <div class="recipe {{selected}}" onclick="toggleRecipeVisibility(this)">
+        <span class="name">{{name}}</span>
+        <span class="content hidden">
+            <hr>
+            {{{content}}}
+            <hr>
+        </span>
+    </div>
+</template>
