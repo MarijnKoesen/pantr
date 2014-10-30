@@ -1,3 +1,4 @@
+<!--
 <head>
   <title>Pantr</title>
   <meta name="viewport" content="width=device-width, user-scalable=no">
@@ -27,48 +28,4 @@
   <div id="qunit-fixture"></div>
 </body>
 
-<template name="ingredients">
-    {{#if selected_name}}
-    <div class="details">
-        <div class="name">{{selected_name}}</div>
-        <button class="inc">Give 5 points</button>
-    </div>
-    {{else}}
-    <div class="none">Click a ingredient to add to pantry</div>
-    {{/if}}
-
-    <div class="leaderboard">
-        {{#each ingredients}}
-            {{> ingredient}}
-        {{/each}}
-    </div>
-</template>
-
-<template name="ingredient">
-  <div class="ingredient {{selected}}">
-    <span class="name">{{name}}</span>
-    <span class="score">{{unit.name}}</span>
-  </div>
-</template>
-
-
-<template name="recipes">
-    <div class="recipes">
-        {{#each recipes}}
-            {{> recipe}}
-        {{/each}}
-    </div>
-</template>
-
-<template name="recipe">
-    <div class="recipe {{selected}}">
-        <span class="name">{{name}}</span>
-        <span class="content hidden">
-            <hr>
-{{#markdown}}
-{{{recipe rawContent}}}
-{{/markdown}}
-            <hr>
-        </span>
-    </div>
-</template>
+-->
